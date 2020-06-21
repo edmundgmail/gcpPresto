@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: metastore-s3-keys
+  namespace: warehouse
+type: Opaque
+stringData:
+  access-key: #AWSAccessKeyId#
+  secret-key: #AWSSecretKey#

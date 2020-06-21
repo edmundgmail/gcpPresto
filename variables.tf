@@ -2,7 +2,7 @@ variable "name" {
   default = "demo-cluster"
 }
 variable "project" {
-  default = "optimum-spring-238818"
+  default = "big-data-on-gcp1"
 }
 
 variable "location" {
