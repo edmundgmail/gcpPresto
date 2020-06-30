@@ -2,12 +2,16 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: presto-cli
-  namespace: warehouse
+  namespace: default
 spec:
   volumes:
     - name: shared-vol
       persistentVolumeClaim:
         claimName: data-client-share
+    - name: hive-catalog
+      persistentVolumeClaim:
+        claimName: hive-catalog  
+
   containers:
   - name: presto-cli
     image: "uprush/prestosql-cli:330"
@@ -17,3 +21,7 @@ spec:
     volumeMounts:
       - name: shared-vol
         mountPath: /data
+      - name: hive-catalog
+        mountPath: /hive_catalog
+
+        

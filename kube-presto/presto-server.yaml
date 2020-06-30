@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: presto
-  namespace: warehouse
+  namespace: default
 spec:
   ports:
   - port: 8080
@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: presto-coordinator
-  namespace: warehouse
+  namespace: default
 spec:
   selector:
     matchLabels:
@@ -81,7 +81,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: presto-worker
-  namespace: warehouse
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -109,6 +109,10 @@ spec:
               name: metastore-s3-keys
               key: secret-key
         volumeMounts:
+        - name: shared-vol
+          mountPath: /data          
+        - name: hive-catalog
+          mountPath: /hive_catalog
         - name: presto-etc-vol
           mountPath: /opt/presto-server/etc/config.properties
           subPath: config.properties.worker
@@ -128,6 +132,12 @@ spec:
             memory: "1G"
         imagePullPolicy: Always
       volumes:
+        - name: hive-catalog
+          persistentVolumeClaim:
+            claimName: hive-catalog  
+        - name: shared-vol
+          persistentVolumeClaim:
+            claimName: data-client-share
         - name: presto-etc-vol
           configMap:
             name: presto-etc
